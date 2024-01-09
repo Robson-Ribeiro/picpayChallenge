@@ -1,5 +1,9 @@
 package com.picpayChallenge.dtos;
 
+import org.springframework.beans.BeanUtils;
+
+import com.picpayChallenge.entities.TransactionEntity;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,4 +29,7 @@ public class TransactionDto {
         this.value = value;
     }
 
+    public TransactionDto(TransactionEntity transaction) {
+        BeanUtils.copyProperties(transaction, this);
+    }
 }
