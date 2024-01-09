@@ -43,7 +43,5 @@ public class UserDto {
 
     public UserDto(UserEntity user) {
         BeanUtils.copyProperties(user, this);
-    }
-
-    
+    }    
 }
