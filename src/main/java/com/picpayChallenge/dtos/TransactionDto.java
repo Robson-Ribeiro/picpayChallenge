@@ -1,7 +1,5 @@
 package com.picpayChallenge.dtos;
 
-import org.springframework.beans.BeanUtils;
-
 import com.picpayChallenge.entities.TransactionEntity;
 
 import lombok.EqualsAndHashCode;
