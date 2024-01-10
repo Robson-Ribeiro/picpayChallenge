@@ -3,6 +3,7 @@ package com.picpayChallenge.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.picpayChallenge.dtos.TransactionDto;
 import com.picpayChallenge.entities.TransactionEntity;
@@ -10,6 +11,7 @@ import com.picpayChallenge.entities.UserEntity;
 import com.picpayChallenge.repositories.TransactionRepository;
 import com.picpayChallenge.repositories.UserRepository;
 
+@Service
 public class TransactionService {
     
     @Autowired
