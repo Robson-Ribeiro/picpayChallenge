@@ -5,6 +5,7 @@ import org.springframework.beans.BeanUtils;
 import com.picpayChallenge.dataTypes.UserType;
 import com.picpayChallenge.entities.UserEntity;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,18 +19,25 @@ public class UserDto {
 
     private Long id;
 
+    @NotBlank
     private String name;
 
+    @NotBlank
     private String surname;
 
+    @NotBlank
     private String document;
 
+    @NotBlank
     private String email;
 
+    @NotBlank
     private String password;
 
+    @NotBlank
     private double balance;
 
+    @NotBlank
     private UserType userType;
 
     public UserDto(String name, String surname, String document, String email, String password, double balance, UserType userType) {

@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.picpayChallenge.dtos.UserDto;
 import com.picpayChallenge.services.UserService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +33,7 @@ public class UserController {
     }
 
     @PostMapping
-    public UserDto createUser(@RequestBody UserDto user) {
+    public UserDto createUser(@RequestBody @Valid UserDto user) {
         return userService.createUser(user);
     }
 }
