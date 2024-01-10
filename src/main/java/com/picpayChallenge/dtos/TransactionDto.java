@@ -2,7 +2,7 @@ package com.picpayChallenge.dtos;
 
 import com.picpayChallenge.entities.TransactionEntity;
 import jakarta.validation.constraints.NotBlank;
-
+import jakarta.validation.constraints.NotEmpty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,13 +16,16 @@ public class TransactionDto {
 
     private Long id;
 
-    @NotBlank
+    @NotBlank( message = "The receiverId field is mandatory!")
+    @NotEmpty( message = "The receiverId field is mandatory!")
     private Long receiverId;
 
-    @NotBlank
+    @NotBlank( message = "The payerId field is mandatory!")
+    @NotEmpty( message = "The payerId field is mandatory!")
     private Long payerId;
 
-    @NotBlank
+    @NotBlank( message = "The value field is mandatory!")
+    @NotEmpty( message = "The value field is mandatory!")
     private double value;
 
     public TransactionDto(Long receiverId, Long payerId, double value) {
