@@ -1,5 +1,7 @@
 package com.picpayChallenge.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,12 +27,12 @@ public class TransactionEntity {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(nullable = false)
     @ManyToOne
+    @JoinColumn(nullable = false, name = "receiver_id")
     private UserEntity receiver;
 
-    @JoinColumn(nullable = false)
     @ManyToOne
+    @JoinColumn(nullable = false, name = "payer_id")
     private UserEntity payer;
 
     @Column(nullable = false)

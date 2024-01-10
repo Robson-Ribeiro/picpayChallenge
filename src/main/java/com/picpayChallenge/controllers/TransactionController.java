@@ -19,7 +19,7 @@ public class TransactionController {
     @Autowired
     private TransactionService transactionService;
 
-    @PostMapping("/")
+    @PostMapping
     public TransactionDto transferFunds(@RequestBody TransactionDto transaction) throws Exception {
 
         return transactionService.transferFunds(transaction);
