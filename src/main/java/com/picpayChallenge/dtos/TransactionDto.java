@@ -30,6 +30,9 @@ public class TransactionDto {
     }
 
     public TransactionDto(TransactionEntity transaction) {
-        BeanUtils.copyProperties(transaction, this);
+        this.id = transaction.getId();
+        this.receiverId = transaction.getReceiver().getId();
+        this.payerId = transaction.getPayer().getId();
+        this.value = transaction.getValue();
     }
 }
