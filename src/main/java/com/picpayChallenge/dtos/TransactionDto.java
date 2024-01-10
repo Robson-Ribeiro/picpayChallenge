@@ -1,6 +1,7 @@
 package com.picpayChallenge.dtos;
 
 import com.picpayChallenge.entities.TransactionEntity;
+import jakarta.validation.constraints.NotBlank;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,10 +16,13 @@ public class TransactionDto {
 
     private Long id;
 
+    @NotBlank
     private Long receiverId;
 
+    @NotBlank
     private Long payerId;
 
+    @NotBlank
     private double value;
 
     public TransactionDto(Long receiverId, Long payerId, double value) {

@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.picpayChallenge.dtos.TransactionDto;
 import com.picpayChallenge.services.TransactionService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -20,7 +23,7 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @PostMapping
-    public TransactionDto transferFunds(@RequestBody TransactionDto transaction) throws Exception {
+    public TransactionDto transferFunds(@RequestBody @Valid TransactionDto transaction) throws Exception {
 
         return transactionService.transferFunds(transaction);
     }
