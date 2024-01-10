@@ -2,10 +2,13 @@ package com.picpayChallenge.entities;
 
 import org.springframework.beans.BeanUtils;
 
+import com.picpayChallenge.dataTypes.UserType;
 import com.picpayChallenge.dtos.UserDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -46,9 +49,10 @@ public class UserEntity {
     private double balance;
 
     @Column(nullable = false)
-    private String userType;
+    @Enumerated(EnumType.STRING)
+    private UserType userType;
 
-    public UserEntity(String name, String surname, String document, String email, String password, double balance, String userType) {
+    public UserEntity(String name, String surname, String document, String email, String password, double balance, UserType userType) {
         this.name = name;
         this.surname = surname;
         this.document = document;

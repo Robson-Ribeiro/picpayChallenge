@@ -2,6 +2,7 @@ package com.picpayChallenge.dtos;
 
 import org.springframework.beans.BeanUtils;
 
+import com.picpayChallenge.dataTypes.UserType;
 import com.picpayChallenge.entities.UserEntity;
 
 import lombok.EqualsAndHashCode;
@@ -29,9 +30,9 @@ public class UserDto {
 
     private double balance;
 
-    private String userType;
+    private UserType userType;
 
-    public UserDto(String name, String surname, String document, String email, String password, double balance, String userType) {
+    public UserDto(String name, String surname, String document, String email, String password, double balance, UserType userType) {
         this.name = name;
         this.surname = surname;
         this.document = document;
