@@ -1,9 +1,13 @@
 package com.picpayChallenge.services;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.picpayChallenge.dtos.TransactionDto;
 import com.picpayChallenge.entities.TransactionEntity;
@@ -20,10 +24,12 @@ public class TransactionService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     public TransactionDto transferFunds(TransactionDto transaction) throws Exception {
 
         Optional<UserEntity> optPayer = userRepository.findById(transaction.getPayerId());
-        
         UserEntity payer = optPayer.get();
 
         if("common" != payer.getUserType().toString()) {
@@ -33,18 +39,30 @@ public class TransactionService {
             throw new Exception("Your account does not have enough money to make this transaction!");
         }
 
+
+        ResponseEntity<Map> ApiAuthorization = restTemplate.getForEntity("https://run.mocky.io/v3/5794d450-d2e2-4412-8131-73d0293ac1cc", Map.class);
+
+        if(ApiAuthorization.getStatusCode() != HttpStatus.OK) {
+            throw new Exception("The system could not obtain an authorization for your transaction.");
+        } 
+        if(!"Autorizado".equalsIgnoreCase(ApiAuthorization.getBody().get("message").toString())) {
+            throw new Exception("It's not possible to do this transaction.");
+        }
+
+
         Optional<UserEntity> optReceiver = userRepository.findById(transaction.getReceiverId());
         UserEntity receiver = optReceiver.get();
 
         payer.setBalance(payer.getBalance() - transaction.getValue());
         receiver.setBalance(receiver.getBalance() + transaction.getValue());
 
-        payer = userRepository.save(payer);
-        receiver = userRepository.save(receiver);
 
         TransactionEntity newTransaction = new TransactionEntity(receiver, payer, transaction.getValue());
 
         TransactionEntity successfulTransaction = transactionRepository.save(newTransaction);
+
+        userRepository.save(payer);
+        userRepository.save(receiver);
 
         return new TransactionDto(successfulTransaction);
     }
