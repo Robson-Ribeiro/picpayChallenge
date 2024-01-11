@@ -7,6 +7,7 @@ import com.picpayChallenge.entities.UserEntity;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,12 +41,10 @@ public class UserDto {
     @NotEmpty
     private String password;
 
-    @NotBlank
-    @NotEmpty
+    @NotNull
     private double balance;
 
-    @NotBlank
-    @NotEmpty
+    @NotNull
     private UserType userType;
 
     public UserDto(String name, String surname, String document, String email, String password, double balance, UserType userType) {
