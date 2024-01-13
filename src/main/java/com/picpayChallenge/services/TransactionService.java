@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.picpayChallenge.dtos.NotificationDto;
 import com.picpayChallenge.dtos.TransactionDto;
 import com.picpayChallenge.entities.TransactionEntity;
 import com.picpayChallenge.entities.UserEntity;
@@ -63,6 +64,14 @@ public class TransactionService {
 
         userRepository.save(payer);
         userRepository.save(receiver);
+
+        NotificationDto notificationDto = new NotificationDto(receiver.getEmail(), transaction.getValue());
+
+        ResponseEntity<Map> notificationResponse = restTemplate.postForEntity("https://run.mocky.io/v3/54dc2cf1-3add-45b5-b5a9-6bf7e7f1f4a6", notificationDto, Map.class);
+
+        if(notificationResponse.getStatusCode() != HttpStatus.OK || !"true".equalsIgnoreCase(notificationResponse.getBody().get("message").toString())) {
+            throw new Exception("Could not notificate the receiver's e-mail.");
+        }
 
         return new TransactionDto(successfulTransaction);
     }
