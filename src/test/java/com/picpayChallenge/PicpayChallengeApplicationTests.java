@@ -147,6 +147,33 @@ class PicpayChallengeApplicationTests {
 			.jsonPath("$.value").isEqualTo(transaction.getValue());
 	}
 
+	@Test
+	void transferFundsFailure() {
+		UserEntity userCommon = new UserEntity("Jin", "S123k", "k1337983", "a313211@ggmail.com", "ab213dgdfc5780", 100, UserType.common);
+		userRepository.save(userCommon);
+
+		UserEntity userSeller = new UserEntity("Jason", "Sternauer", "697-2937409", "andae1231@gmail.com", "134123412341234", 100, UserType.seller);
+		userRepository.save(userSeller);
+
+		TransactionDto transaction = new TransactionDto((long) 1, (long) 2, (double) 20.0);
+
+		webTestClient
+			.post()
+			.uri("/transaction")
+			.bodyValue(transaction)
+			.exchange()
+			.expectStatus().isBadRequest();
+
+		transaction = new TransactionDto((long) 2, (long) 1, (double) -20.0);
+
+		webTestClient
+			.post()
+			.uri("/transaction")
+			.bodyValue(transaction)
+			.exchange()
+			.expectStatus().isBadRequest();
+	}
+
 
 
 }

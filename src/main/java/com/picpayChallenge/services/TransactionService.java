@@ -3,6 +3,7 @@ package com.picpayChallenge.services;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,14 +31,18 @@ public class TransactionService {
 
     public TransactionDto transferFunds(TransactionDto transaction) throws Exception {
 
+        if(transaction.getValue() <= 0) {
+            throw new BadRequestException("You need an amount bigger than zero to make a transaction!");
+        }
+
         Optional<UserEntity> optPayer = userRepository.findById(transaction.getPayerId());
         UserEntity payer = optPayer.get();
 
         if("common" != payer.getUserType().toString()) {
-            throw new Exception("Only common users can transfer their funds!");
+            throw new BadRequestException("Only common users can transfer their funds!");
         } 
         if(payer.getBalance() < transaction.getValue()) {
-            throw new Exception("Your account does not have enough money to make this transaction!");
+            throw new BadRequestException("Your account does not have enough money to make this transaction!");
         }
 
 
