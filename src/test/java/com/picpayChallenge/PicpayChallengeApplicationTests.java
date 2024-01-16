@@ -12,6 +12,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import com.picpayChallenge.dataTypes.UserType;
 import com.picpayChallenge.dtos.UserDto;
+import com.picpayChallenge.entities.UserEntity;
 import com.picpayChallenge.repositories.UserRepository;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -84,4 +85,27 @@ class PicpayChallengeApplicationTests {
 
 	}
 	
+	@Test
+	public void getUsers() {
+		UserEntity user = new UserEntity("Jin", "S123k", "k1337983", "a313211@ggmail.com", "ab213dgdfc5780", 100, UserType.common);
+		userRepository.save(user);
+
+		webTestClient
+			.get()
+			.uri("/user")
+			.exchange()
+			.expectBody()
+			.jsonPath("$").isArray()
+			.jsonPath("$.length()").isEqualTo(1)
+			.jsonPath("$[0].name").isEqualTo(user.getName())
+			.jsonPath("$[0].surname").isEqualTo(user.getSurname())
+			.jsonPath("$[0].document").isEqualTo(user.getDocument())
+			.jsonPath("$[0].email").isEqualTo(user.getEmail())
+			.jsonPath("$[0].password").isEqualTo(user.getPassword())
+			.jsonPath("$[0].balance").isEqualTo(user.getBalance())
+			.jsonPath("$[0].userType").isEqualTo(user.getUserType().toString());
+	}
+
+
+
 }
