@@ -11,6 +11,7 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import com.picpayChallenge.dataTypes.UserType;
+import com.picpayChallenge.dtos.TransactionDto;
 import com.picpayChallenge.dtos.UserDto;
 import com.picpayChallenge.entities.UserEntity;
 import com.picpayChallenge.repositories.UserRepository;
@@ -104,6 +105,46 @@ class PicpayChallengeApplicationTests {
 			.jsonPath("$[0].password").isEqualTo(user.getPassword())
 			.jsonPath("$[0].balance").isEqualTo(user.getBalance())
 			.jsonPath("$[0].userType").isEqualTo(user.getUserType().toString());
+	}
+
+	@Test
+	void transferFundsSuccess() {
+		UserEntity userCommon = new UserEntity("Jin", "S123k", "k1337983", "a313211@ggmail.com", "ab213dgdfc5780", 100, UserType.common);
+		userRepository.save(userCommon);
+
+		UserEntity userSeller = new UserEntity("Jason", "Sternauer", "697-2937409", "andae1231@gmail.com", "134123412341234", 100, UserType.seller);
+		userRepository.save(userSeller);
+
+		UserEntity userCommon2 = new UserEntity("Jon", "Bones", "7777777", "goat@ggmail.com", "97934549", 100, UserType.common);
+		userRepository.save(userCommon2);
+
+		TransactionDto transaction = new TransactionDto((long) 2, (long) 1, (double) 20.0);
+
+		webTestClient
+			.post()
+			.uri("/transaction")
+			.bodyValue(transaction)
+			.exchange()
+			.expectStatus().isOk()
+			.expectBody()
+			.jsonPath("$").isNotEmpty()
+			.jsonPath("$.payerId").isEqualTo(transaction.getPayerId())
+			.jsonPath("$.receiverId").isEqualTo(transaction.getReceiverId())
+			.jsonPath("$.value").isEqualTo(transaction.getValue());
+
+		transaction = new TransactionDto((long) 1, (long) 3, (double) 20.0);
+
+		webTestClient
+			.post()
+			.uri("/transaction")
+			.bodyValue(transaction)
+			.exchange()
+			.expectStatus().isOk()
+			.expectBody()
+			.jsonPath("$").isNotEmpty()
+			.jsonPath("$.payerId").isEqualTo(transaction.getPayerId())
+			.jsonPath("$.receiverId").isEqualTo(transaction.getReceiverId())
+			.jsonPath("$.value").isEqualTo(transaction.getValue());
 	}
 
 
